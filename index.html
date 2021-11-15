@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weekly Timesheet</title>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="index.css">
+    </head>
+
+<body onload="runApp();">
+  <main>
+    <div>
+      <h4>Weekly Timesheet</h4>
+      <hr />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tasks</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thurday</th>
+            <th>Friday</th>
+            <th>Total Task Time</th>
+          </tr>
+        </thead>
+        <tbody id='data-elem'></tbody>
+      </table>
+      <hr />
+
+      <div class="toolbar">
+        <button onclick="addNewTask()">Add New Task</button>
+        <button onclick="clearAllTasks()">Clear Week</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
