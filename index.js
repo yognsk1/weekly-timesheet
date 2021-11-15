@@ -40,6 +40,9 @@ const renderTable = () => {
               }" onkeyup="updateHrs(this);" task="${key}"" name="fr" /></td>
 
               <td>${getTotalTaskTime(rec)} Hrs</td>
+              <td>
+                <button class="remove-btn" title="Remove" task="${key}" onclick="removeTask(this);">X</button>
+              </td>
             </tr>`;
 
     for (const day in rec) {
@@ -55,6 +58,7 @@ const renderTable = () => {
               <td>${getTimeByDay("th")}</td>
               <td>${getTimeByDay("fr")}</td>
               <td><b class='total-week-time'>${weeklyHrs} Hrs</b></td>
+              <td></td>
           </tr>`;
 
   document.getElementById("data-elem").innerHTML = rows;
@@ -101,4 +105,19 @@ const addNewTask = () => {
 const clearAllTasks = () => {
   localStorage.clear();
   initApp();
+};
+
+const removeTask = (e) => {
+  const task = e.getAttribute("task");
+  const object = {};
+
+  for (const t in data) {
+    if (task != t) {
+      object[t] = data[t];
+    }
+  }
+
+  data = object;
+  localStorage.setItem("timesheet", JSON.stringify(data));
+  renderTable();
 };
