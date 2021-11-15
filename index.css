@@ -1,6 +1,7 @@
 main {
   display: flex;
   justify-content: center;
+  font-family: sans-serif;
 }
 
 main > div {
@@ -31,6 +32,7 @@ input[type="text"] {
 
 button {
   margin-left: 10px;
+  cursor: pointer;
 }
 
 th,
@@ -41,4 +43,8 @@ td {
 
 table {
   border-spacing: 0;
+}
+
+.remove-btn {
+  color: red;
 }
