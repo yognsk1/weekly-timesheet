@@ -21,23 +21,23 @@ const renderTable = () => {
               <td>${key}</td>
               <td><input type="text" value="${
                 rec.mo || ""
-              }" onkeyup="updateHrs(this);" task="${key}"" name="mo" /></td>
+              }" onblur="updateHrs(this);" task="${key}"" name="mo" /></td>
 
               <td><input type="text" value="${
                 rec.tu || ""
-              }" onkeyup="updateHrs(this);" task="${key}"" name="tu" /></td>
+              }" onblur="updateHrs(this);" task="${key}"" name="tu" /></td>
 
               <td><input type="text" value="${
                 rec.we || ""
-              }" onkeyup="updateHrs(this);" task="${key}"" name="we" /></td>
+              }" onblur="updateHrs(this);" task="${key}"" name="we" /></td>
 
               <td><input type="text" value="${
                 rec.th || ""
-              }" onkeyup="updateHrs(this);" task="${key}"" name="th" /></td>
+              }" onblur="updateHrs(this);" task="${key}"" name="th" /></td>
 
               <td><input type="text" value="${
                 rec.fr || ""
-              }" onkeyup="updateHrs(this);" task="${key}"" name="fr" /></td>
+              }" onblur="updateHrs(this);" task="${key}"" name="fr" /></td>
 
               <td>${getTotalTaskTime(rec)} Hrs</td>
               <td>
