@@ -55,23 +55,23 @@ function renderTable() {
     rows += `<tr>
               <td>${key}</td>
               <td><input type="text" value="${
-                rec.mo || ""
+                rec.mo
               }" task="${key}" name="mo" /></td>
 
               <td><input type="text" value="${
-                rec.tu || ""
+                rec.tu
               }" task="${key}" name="tu" /></td>
 
               <td><input type="text" value="${
-                rec.we || ""
+                rec.we
               }" task="${key}" name="we" /></td>
 
               <td><input type="text" value="${
-                rec.th || ""
+                rec.th
               }" task="${key}" name="th" /></td>
 
               <td><input type="text" value="${
-                rec.fr || ""
+                rec.fr
               }" task="${key}" name="fr" /></td>
 
               <td style="display: flex; justify-content: space-between;">
@@ -81,7 +81,7 @@ function renderTable() {
             </tr>`;
 
     for (const day in rec) {
-      weeklyHrs += rec[day];
+      weeklyHrs += rec[day] || 0;
     }
   }
 
@@ -113,7 +113,8 @@ function renderTable() {
 
 function getTotalTaskTime(task) {
   let total = 0;
-  for (const day in task) total += task[day];
+  for (const day in task) total += task[day] || 0;
+
   return total;
 }
 
@@ -122,7 +123,10 @@ function updateHrs(e) {
   const name = e.name;
   const task = e.getAttribute("task");
 
-  Obj[task][name] = e.value ? parseInt(e.value) : 0;
+  let value = parseInt(e.value);
+  value = isNaN(value) ? "" : value;
+
+  Obj[task][name] = value;
   data = Obj;
 
   window.localStorage.setItem("timesheet", JSON.stringify(data));
@@ -131,8 +135,9 @@ function updateHrs(e) {
 
 function getTimeByDay(day) {
   let total = 0;
+  console.log(data);
 
-  for (const task in data) total += data[task][day];
+  for (const task in data) total += data[task][day] || 0;
 
   return total + " Hrs";
 }
@@ -141,7 +146,7 @@ function addNewTask() {
   const name = prompt("Enter Task Name: ");
 
   if (name) {
-    data[name] = { mo: 0, tu: 0, we: 0, th: 0, fr: 0 };
+    data[name] = { mo: "", tu: "", we: "", th: "", fr: "" };
 
     window.localStorage.setItem("timesheet", JSON.stringify(data));
   }
