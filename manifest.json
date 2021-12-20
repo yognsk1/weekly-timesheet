@@ -1,14 +1,14 @@
 {
-    "name": "My Extension",
-    "description": "Build an Extension for weekly timesheet management",
+    "name": "Weekly Timesheet",
+    "description": "Build an Extension to manage the weekly timesheet.",
     "version": "1.0",
     "manifest_version": 3,
     "action": {
         "default_popup": "index.html"
     },
-    "permissions": [
-        "storage",
-        "activeTab",
-        "scripting"
-    ]
+    "icons": { 
+        "16": "calendar.png",
+        "48": "calendar.png",
+       "128": "calendar.png" 
+    }
 }
