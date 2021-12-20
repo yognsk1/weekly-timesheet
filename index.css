@@ -1,7 +1,11 @@
+body,
+html {
+  margin: 0;
+  overflow: hidden;
+}
+
 main {
-  display: flex;
-  justify-content: center;
-  font-family: sans-serif;
+  margin: 10px;
 }
 
 main > div {
@@ -39,6 +43,7 @@ th,
 td {
   text-align: left;
   padding: 5px;
+  min-width: 88px;
 }
 
 table {
