@@ -1,18 +1,53 @@
 let data = {};
+const addNewTaskBtn = document.getElementById("addNewTask");
+const clearAllTasksBtn = document.getElementById("clearAllTasks");
 
-const runApp = () => {
+addNewTaskBtn.addEventListener("click", async () => {
+  addNewTask();
+});
+clearAllTasksBtn.addEventListener("click", async () => {
+  clearAllTasks();
+});
+
+function runApp() {
   initApp();
-};
+}
 
-const initApp = () => {
-  const timesheet = localStorage.getItem("timesheet");
+function initApp() {
+  const timesheet = window.localStorage.getItem("timesheet");
   data = timesheet ? JSON.parse(timesheet) : {};
   renderTable();
-};
+}
 
-const renderTable = () => {
+function getWeekDates() {
+  const dates = [];
+  const currentDate = new Date();
+
+  for (let index = 1; index <= 5; index++) {
+    let d = new Date(
+      currentDate.setDate(currentDate.getDate() - currentDate.getDay() + index)
+    );
+
+    dates.push(
+      d.toLocaleDateString().split("/")[1] +
+        "/" +
+        d.toLocaleDateString().split("/")[0]
+    );
+  }
+
+  return dates;
+}
+
+function renderTable() {
   let rows = ``;
   let weeklyHrs = 0;
+  let dates = getWeekDates();
+
+  rows += `<tr><td></td>`;
+  for (const date of dates) {
+    rows += `<td>${date}</td>`;
+  }
+  rows += `<td></td></tr>`;
 
   for (const key in data) {
     const rec = data[key];
@@ -21,27 +56,27 @@ const renderTable = () => {
               <td>${key}</td>
               <td><input type="text" value="${
                 rec.mo || ""
-              }" onblur="updateHrs(this);" task="${key}"" name="mo" /></td>
+              }" task="${key}" name="mo" /></td>
 
               <td><input type="text" value="${
                 rec.tu || ""
-              }" onblur="updateHrs(this);" task="${key}"" name="tu" /></td>
+              }" task="${key}" name="tu" /></td>
 
               <td><input type="text" value="${
                 rec.we || ""
-              }" onblur="updateHrs(this);" task="${key}"" name="we" /></td>
+              }" task="${key}" name="we" /></td>
 
               <td><input type="text" value="${
                 rec.th || ""
-              }" onblur="updateHrs(this);" task="${key}"" name="th" /></td>
+              }" task="${key}" name="th" /></td>
 
               <td><input type="text" value="${
                 rec.fr || ""
-              }" onblur="updateHrs(this);" task="${key}"" name="fr" /></td>
+              }" task="${key}" name="fr" /></td>
 
-              <td>${getTotalTaskTime(rec)} Hrs</td>
-              <td>
-                <button class="remove-btn" title="Remove" task="${key}" onclick="removeTask(this);">X</button>
+              <td style="display: flex; justify-content: space-between;">
+                <span>${getTotalTaskTime(rec)} Hrs</span>
+                <button class="remove-btn" title="Remove" task="${key}">X</button>
               </td>
             </tr>`;
 
@@ -58,19 +93,31 @@ const renderTable = () => {
               <td>${getTimeByDay("th")}</td>
               <td>${getTimeByDay("fr")}</td>
               <td><b class='total-week-time'>${weeklyHrs} Hrs</b></td>
-              <td></td>
           </tr>`;
 
-  document.getElementById("data-elem").innerHTML = rows;
-};
+  window.document.getElementById("data-elem").innerHTML = rows;
 
-const getTotalTaskTime = (task) => {
+  // attaching events
+  const inputEls = document.getElementsByTagName("input");
+  const removeBtns = document.getElementsByClassName("remove-btn");
+
+  for (let index = 0; index < inputEls.length; index++) {
+    const element = inputEls[index];
+    element.addEventListener("blur", () => updateHrs(element));
+  }
+  for (let index = 0; index < removeBtns.length; index++) {
+    const element = removeBtns[index];
+    element.addEventListener("click", () => removeTask(element));
+  }
+}
+
+function getTotalTaskTime(task) {
   let total = 0;
   for (const day in task) total += task[day];
   return total;
-};
+}
 
-const updateHrs = (e) => {
+function updateHrs(e) {
   let Obj = { ...data };
   const name = e.name;
   const task = e.getAttribute("task");
@@ -78,38 +125,54 @@ const updateHrs = (e) => {
   Obj[task][name] = e.value ? parseInt(e.value) : 0;
   data = Obj;
 
-  localStorage.setItem("timesheet", JSON.stringify(data));
+  window.localStorage.setItem("timesheet", JSON.stringify(data));
   renderTable();
-};
+}
 
-const getTimeByDay = (day) => {
+function getTimeByDay(day) {
   let total = 0;
 
   for (const task in data) total += data[task][day];
 
   return total + " Hrs";
-};
+}
 
-const addNewTask = () => {
+function addNewTask() {
   const name = prompt("Enter Task Name: ");
 
   if (name) {
     data[name] = { mo: 0, tu: 0, we: 0, th: 0, fr: 0 };
 
-    localStorage.setItem("timesheet", JSON.stringify(data));
+    window.localStorage.setItem("timesheet", JSON.stringify(data));
   }
 
   renderTable();
-};
+}
 
-const clearAllTasks = () => {
-  localStorage.clear();
+function clearAllTasks() {
+  const choice = window.confirm(
+    "Are you sure, Do you want to clear week data?"
+  );
+
+  if (!choice) {
+    return;
+  }
+
+  window.localStorage.clear();
   initApp();
-};
+}
 
-const removeTask = (e) => {
+function removeTask(e) {
   const task = e.getAttribute("task");
   const object = {};
+
+  const choice = window.confirm(
+    `Are you sure, Do you want to remove "${task}"?`
+  );
+
+  if (!choice) {
+    return;
+  }
 
   for (const t in data) {
     if (task != t) {
@@ -118,6 +181,9 @@ const removeTask = (e) => {
   }
 
   data = object;
-  localStorage.setItem("timesheet", JSON.stringify(data));
+  window.localStorage.setItem("timesheet", JSON.stringify(data));
   renderTable();
-};
+}
+
+// start application
+runApp();
